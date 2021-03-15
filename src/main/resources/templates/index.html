@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>test</title>
+    <script src="../static/js/jquery.js"></script>
+</head>
+<body>
+
+<h1 style="text-align: center;">学生管理系统</h1>
+<hr>
+<a href="add.html">添加学生</a>
+<div id="show">
+
+</div>
+
+<a href="javascript:upPage();">上一页</a>  <a href="javascript:downPage();">下一页</a>
+
+
+</body>
+<script type="text/javascript">
+
+    var page = 1;
+    var tp = 0;
+
+    $(function(){
+        showData();
+    });
+
+    function upPage(){
+        if(page>1){
+            page--;
+            showData();
+        }
+
+    }
+
+    function downPage(){
+        if(page<tp){
+            page++;
+            showData();
+        }
+
+    }
+
+    function showData(){
+        $.ajax({
+            url:'http://localhost:8080/student/query?page='+page,
+            success:function(result){
+//                console.log(result);
+                var rel = result.list;
+                tp = result.total;
+//                console.log(tp);
+                var htmlStr = "<table width='80%' algin='center' border='1'>"+
+                        "<tr><th>ID</th><th>姓名</th><th>年龄</th><th>性别</th><th>操作</th></tr>";
+
+                for(var i=0;i<rel.length;i++){
+                    var stu = rel[i];
+                    htmlStr += "<tr><td>"+stu.id+"</td><td>"+stu.name+"</td><td>"+stu.age+"</td><td>"+stu.sex+"</td>"+
+                            "<td><a href='update.html'>修改</a> <a href='http://localhost:8080/student/delete?id="+stu.id+"'>删除</a></td></tr>";
+                }
+
+                htmlStr += "</table>";
+
+                $("#show").html(htmlStr);
+            }
+        });
+    }
+
+</script>
+</html>

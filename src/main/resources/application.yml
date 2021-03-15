@@ -1,0 +1,41 @@
+server:
+  port: 8080
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://127.0.0.1:3306/stu?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: root
+    type: com.alibaba.druid.pool.DruidDataSource
+    druid:
+      initial-size: 5 #初始化时建立连接的物理个数
+      max-active: 20 #最大连接池数量
+      min-idle: 5 #最小连接池数量
+      max-wait: 60000 #获取连接时最大的等待时间，单位毫秒
+      pool-prepared-statements: true #否缓存preparedStatement，也就是PSCache,PSCache对支持游标的数据库性能提升巨大，比如说oracle,在mysql下建议关闭。
+#      max-open-prepared-statements: -1 #要启用PSCache，必须配置大于0，当大于0时，poolPreparedStatements自动触发修改为true。在Druid中，不会存在Oracle下PSCache占用内存过多的问题，可以把这个数值配置大一些，比如说100
+      time-between-eviction-runs-millis: 60000 #配置检测可以关闭的空闲连接间隔时间
+      min-evictable-idle-time-millis: 300000 #配置连接在池中的最小生存时间
+      max-evictable-idle-time-millis: 400000 #连接空闲时间大于该值，不管minIdle都关闭该连接
+      filters: stat,wall #监控统计的stat,以及防sql注入的wall
+#      web-stat-filter.enabled: true #是否启用StatFilter默认值true
+#      web-stat-filter.url-pattern: /* #添加过滤规则
+#      web-stat-filter.exclusions: *.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/* #忽略过滤的格式
+#      stat-view-servlet.enabled: true #是否启用StatViewServlet默认值true
+#      stat-view-servlet.url-pattern: /druid/* #访问路径为/druid时，跳转到StatViewServlet
+#      stat-view-servlet.reset-enable: false # 是否能够重置数据
+#      stat-view-servlet.login-username: root
+#      stat-view-servlet.login-password: root
+#      stat-view-servlet.allow: 127.0.0.1
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  supportMethodsArguments: true
+#mybatis
+mybatis:
+  mapper-locations: classpath:mybatis/mapper/*.xml
+  type-aliases-package: com.godwin.dataobject
+  configuration:
+    map-underscore-to-camel-case: true
+
